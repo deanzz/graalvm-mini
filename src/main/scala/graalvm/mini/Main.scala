@@ -7,7 +7,7 @@ object Main {
   def main(args: Array[String]): Unit = {
 
     val start = System.currentTimeMillis()
-    val res = (0 to 500000).foldLeft(0L){
+    val res = (0 to 1000000).foldLeft(0L){
       case (sum, i) =>
         val s = fibSeq(i.toLong)
         val r = sum + s.sum
