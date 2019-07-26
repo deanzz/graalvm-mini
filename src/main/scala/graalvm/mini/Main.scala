@@ -1,10 +1,21 @@
 package graalvm.mini
 
 object Main {
+  private val runtime = Runtime.getRuntime()
+  import runtime.{ totalMemory, freeMemory, maxMemory }
 
   def main(args: Array[String]): Unit = {
+
     val start = System.currentTimeMillis()
-    val res = (0 to 500000).flatMap(i => fibSeq(i.toLong)).sum
+    val res = (0 to 500000).foldLeft(0L){
+      case (sum, i) =>
+        val s = fibSeq(i.toLong)
+        val r = sum + s.sum
+        val total = totalMemory.toDouble / 1024 / 1024
+        val free = freeMemory.toDouble / 1024 / 1024
+        if (i % 100000 == 0) println(s"total memory = ${total}MB, freeMemory = ${free}MB, usedMemory = ${total - free}MB")
+        r
+    }
     val end = System.currentTimeMillis()
     println(s"res = $res, used ${end - start}ms")
   }
